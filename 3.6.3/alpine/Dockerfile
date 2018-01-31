@@ -56,6 +56,7 @@ RUN pip3 --no-cache-dir install --upgrade pip pipenv
 # Otherwise, change the ADD command or specify it in a .dockerignore file
 ADD . ${PRJ_PATH}
 RUN chown -R apprunner:apprunner ${PRJ_PATH}
+USER apprunner
 
 # Install dependencies located on Pipfile on the system (--system) avoids 
 # having to use pipenv's shell to run python cmds). Do a check at the end
@@ -65,12 +66,13 @@ RUN chown -R apprunner:apprunner ${PRJ_PATH}
 # As there is an issue resolving the PATHs in pipenv on a Alpine so the arg
 # --system does not work. A virtual environtment is created as a temporal
 #  workaround. https://github.com/rpypa/pipenv/issues/1002
-USER apprunner
 
 WORKDIR ${PRJ_PATH}
 RUN pipenv install --dev --deploy \
     && pipenv check
 
+# You can use the user 'apprunner' for a non-root usage
+USER root
 # A Python3 shell is going to be used in case no CMD is specified when 
 #starting the container
 CMD ["/usr/bin/python3"]
