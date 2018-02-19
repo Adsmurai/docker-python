@@ -45,6 +45,11 @@ ENV LANG=C.UTF-8 \
 # Update pip and install pipenv (dependency managers)
 RUN pip3 --no-cache-dir install --upgrade pip pipenv
 
+# Avoid issue with 'Click' will abort further execution because Python 3 was configured to use 
+# ASCII as encoding for the environment http://click.pocoo.org/python3/
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+RUN pip3 install --user pipenv
+
 ###############################################################################
 # Add the sources and install project requirements                            #
 ###############################################################################
@@ -63,13 +68,15 @@ RUN pip3 --no-cache-dir install --upgrade pip pipenv
 # As there is an issue resolving the PATHs in pipenv on a Alpine so the arg
 # --system does not work. A virtual environtment is created as a temporal
 #  workaround. https://github.com/rpypa/pipenv/issues/1002
-
 WORKDIR ${PRJ_PATH}
+
+USER root
+RUN chown -R apprunner:apprunner ${PRJ_PATH}
+
+USER apprunner
 RUN pipenv install --dev --deploy \
     && pipenv check
 
-# You can use the user 'apprunner' for a non-root usage
-USER root
 # A Python3 shell is going to be used in case no CMD is specified when 
 #starting the container
 CMD ["/usr/bin/python3"]
