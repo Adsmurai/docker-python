@@ -40,9 +40,7 @@ ENV LANG=C.UTF-8 \
     SHELL=/bin/ash \
     PRJ_PATH=/home/apprunner/app  \
     # Pipenv config
-    PIPENV_MAX_DEPTH=1 \
-    # Python config
-    PYTHONPATH=/home/apprunner/app/sources
+    PIPENV_MAX_DEPTH=1 
 
 # Update pip and install pipenv (dependency managers)
 RUN pip3 --no-cache-dir install --upgrade pip pipenv
