@@ -52,9 +52,8 @@ RUN pip3 --no-cache-dir install --upgrade pip pipenv
 # - to find a Pipfile and Pipfile.lock at project's root
 # - the Dockerfile is at project's root and everything (.) need to be copied
 # Otherwise, change the ADD command or specify it in a .dockerignore file
-ADD . ${PRJ_PATH}
-RUN chown -R apprunner:apprunner ${PRJ_PATH}
-USER apprunner
+#ADD . ${PRJ_PATH}
+#RUN chown -R apprunner:apprunner ${PRJ_PATH}
 
 # Install dependencies located on Pipfile on the system (--system) avoids 
 # having to use pipenv's shell to run python cmds). Do a check at the end
